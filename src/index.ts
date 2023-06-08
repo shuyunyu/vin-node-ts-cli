@@ -30,6 +30,7 @@ async function build () {
 
   if (fs.existsSync(cwd)) {
     console.log(kleur.red(`directory already exists: ${cwd} `));
+    return;
   } else {
     mkdirSync(cwd);
   }
@@ -42,9 +43,13 @@ async function build () {
 
   writeTsConfig({ cwd })
 
+  writeReadme({ cwd, projectName })
+
   writeEnv({ cwd })
 
   writeIndex({ cwd, projectName })
+
+  writeCommon({ cwd })
 
 }
 
@@ -94,6 +99,13 @@ function writeEnv (params: {
   writeFile(params.cwd, '.env', "")
 }
 
+function writeReadme (params: {
+  cwd: string;
+  projectName: string;
+}) {
+  writeFile(params.cwd, 'README.md', `# ${params.projectName}`);
+}
+
 function writeIndex (params: {
   cwd: string;
   projectName: string;
@@ -102,3 +114,9 @@ function writeIndex (params: {
   writeFile(params.cwd, 'src/index.ts', content)
 }
 
+function writeCommon (params: {
+  cwd: string;
+}) {
+  const envContent = readTemplate('src/common/env.ts')
+  writeFile(params.cwd, 'src/common/env.ts', envContent)
+}

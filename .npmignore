@@ -1,0 +1,5 @@
+src/**
+template/**
+package-lock.json
+.vscode
+.gitignore

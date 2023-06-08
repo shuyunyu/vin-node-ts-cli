@@ -9,7 +9,7 @@ async function build () {
 
   const cwd = process.cwd();
 
-  let projectName = await input({ message: `project name: ${currentProjectName} ?` })
+  let projectName = await input({ message: `project name: ${currentProjectName}` })
   projectName = projectName || currentProjectName;
 
   const projectDescription = await input({ message: 'project description: ' })
@@ -20,12 +20,14 @@ async function build () {
 
   writeTsConfig({ cwd })
 
+  writeEnv({ cwd })
+
   writeIndex({ cwd, projectName })
 
 }
 
 function readTemplate (filePath: string) {
-  const templatePath = path.resolve(__dirname, `template/${filePath}`)
+  const templatePath = path.resolve(__dirname, `template/${filePath}.template`)
   return readFileSync(templatePath, { encoding: 'utf-8' })
 }
 
@@ -62,6 +64,12 @@ function writeTsConfig (params: {
 }) {
   const content = readTemplate('tsconfig.json')
   writeFile(params.cwd, 'tsconfig.json', content)
+}
+
+function writeEnv (params: {
+  cwd: string
+}) {
+  writeFile(params.cwd, '.env', "")
 }
 
 function writeIndex (params: {

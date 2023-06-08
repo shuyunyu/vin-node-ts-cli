@@ -1,12 +1,15 @@
 {
   "name": "vin-node-ts-cli",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "test": "npm run build && node dist/index.js",
     "build": "tsc -p tsconfig.json && npm run cptemplate",
     "cptemplate": "cp -r template dist"
+  },
+  "bin": {
+    "vinnt": "dist/index.js"
   },
   "author": "yumubai",
   "license": "ISC",

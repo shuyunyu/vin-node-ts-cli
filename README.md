@@ -9,5 +9,5 @@ npm install vin-node-ts-cli -g
 ```sh
 mkdir test-project-path
 cd test-project-path
-vinnt
+vinnt create test-node-tes-project
 ```

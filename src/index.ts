@@ -8,28 +8,34 @@ import { program } from "commander";
 
 program
   .option("--version")
-  .option("-v");
+  .option("-v")
+  .action((str: string, opt) => {
+    const options = program.opts()
+    if (options.version || options.v) {
+      const packageJsonPath = path.resolve(__dirname, "../package.json")
+      const packageJson = JSON.parse(readFileSync(packageJsonPath, { encoding: 'utf-8' }));
+      console.log(packageJson.version);
+    }
+  })
+
+program
+  .command('create')
+  .description('create a new node+ts project')
+  .argument('<string>', 'project name')
+  .action((str: string, options) => {
+    const firstCmd = program.commands[0]
+    const projectName = firstCmd.args[0];
+    build(projectName);
+  });
 
 program.parse();
 
-const options = program.opts();
 
-const currentProjectName = getCurrentDirName();
-
-if (options.version || options.v) {
-  const packageJsonPath = path.resolve(__dirname, "../package.json")
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, { encoding: 'utf-8' }));
-  console.log(packageJson.version);
-} else {
-  build();
-}
-
-async function build () {
+async function build (projectName: string) {
 
   let cwd = process.cwd();
 
-  let projectName = await input({ message: `project name: ${currentProjectName}` })
-  projectName = projectName || currentProjectName;
+  cwd = path.resolve(cwd, projectName)
 
   if (fs.existsSync(cwd)) {
     console.log(kleur.red(`directory already exists: ${cwd} `));
@@ -54,12 +60,6 @@ async function build () {
 
   writeCommon({ cwd })
 
-}
-
-function getCurrentDirName () {
-  const cwd = process.cwd();
-  const dirname = path.dirname(cwd);
-  return cwd.slice(dirname.length + 1)
 }
 
 function readTemplate (filePath: string) {

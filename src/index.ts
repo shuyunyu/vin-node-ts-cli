@@ -31,8 +31,6 @@ async function build () {
   let projectName = await input({ message: `project name: ${currentProjectName}` })
   projectName = projectName || currentProjectName;
 
-  cwd = path.resolve(cwd, projectName)
-
   if (fs.existsSync(cwd)) {
     console.log(kleur.red(`directory already exists: ${cwd} `));
     return;

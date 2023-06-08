@@ -1,12 +1,13 @@
 {
   "name": "vin-node-ts-cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A cli for create node+ts project.",
   "main": "dist/index.js",
   "scripts": {
     "test": "npm run build && node dist/index.js",
     "build": "tsc -p tsconfig.json && npm run compress && npm run cptemplate",
-    "cptemplate": "cp -r template dist",
+    "cptemplate": "npm run removeold && cp -r template dist",
+    "removeold": "rm -rf dist/template",
     "compress": "uglifyjs dist/index.js -o dist/index.js"
   },
   "bin": {

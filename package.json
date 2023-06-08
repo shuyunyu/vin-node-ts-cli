@@ -1,6 +1,6 @@
 {
   "name": "vin-node-ts-cli",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A cli for create node+ts project.",
   "main": "dist/index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^2.1.0",
+    "commander": "^10.0.1",
     "dotenv": "^16.1.4",
     "kleur": "^4.1.5"
   }

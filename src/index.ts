@@ -4,13 +4,19 @@ import { input } from "@inquirer/prompts"
 import path from "path"
 import fs, { mkdirSync, readFileSync, writeFileSync } from "fs"
 import kleur from "kleur";
+import { program } from "commander";
+
+program
+  .option("--version")
+  .option("-v");
+
+program.parse();
+
+const options = program.opts();
 
 const currentProjectName = getCurrentDirName();
 
-const args = process.argv.slice(2);
-const firstArg = args[0];
-
-if (firstArg === "--version" || firstArg === "-v") {
+if (options.version || options.v) {
   const packageJsonPath = path.resolve(__dirname, "../package.json")
   const packageJson = JSON.parse(readFileSync(packageJsonPath, { encoding: 'utf-8' }));
   console.log(packageJson.version);
@@ -36,7 +42,7 @@ async function build () {
 
   const projectDescription = await input({ message: 'project description: ' })
 
-  writePageageJson({ cwd, projectName, projectDescription });
+  writePackageJson({ cwd, projectName, projectDescription });
 
   writeGitIgnore({ cwd })
 
@@ -72,7 +78,7 @@ function writeFile (cwd: string, filePath: string, content: string) {
   writeFileSync(p, content, { encoding: 'utf-8' })
 }
 
-function writePageageJson (params: {
+function writePackageJson (params: {
   cwd: string;
   projectName: string;
   projectDescription: string;

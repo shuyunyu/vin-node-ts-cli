@@ -3,7 +3,6 @@
 import { input } from "@inquirer/prompts"
 import path from "path"
 import fs, { mkdirSync, readFileSync, writeFileSync } from "fs"
-import { getCurrentDirName } from "./utils"
 import kleur from "kleur";
 
 const currentProjectName = getCurrentDirName();
@@ -51,6 +50,12 @@ async function build () {
 
   writeCommon({ cwd })
 
+}
+
+function getCurrentDirName () {
+  const cwd = process.cwd();
+  const dirname = path.dirname(cwd);
+  return cwd.slice(dirname.length + 1)
 }
 
 function readTemplate (filePath: string) {

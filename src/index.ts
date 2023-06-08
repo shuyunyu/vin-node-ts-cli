@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { input } from "@inquirer/prompts"
 import path from "path"
 import fs, { mkdirSync, readFileSync, writeFileSync } from "fs"

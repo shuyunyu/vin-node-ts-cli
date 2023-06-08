@@ -4,15 +4,35 @@ import { input } from "@inquirer/prompts"
 import path from "path"
 import fs, { mkdirSync, readFileSync, writeFileSync } from "fs"
 import { getCurrentDirName } from "./utils"
+import kleur from "kleur";
 
 const currentProjectName = getCurrentDirName();
 
+const args = process.argv.slice(2);
+const firstArg = args[0];
+
+if (firstArg === "--version" || firstArg === "-v") {
+  const packageJsonPath = path.resolve(__dirname, "../package.json")
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, { encoding: 'utf-8' }));
+  console.log(packageJson.version);
+} else {
+  build();
+}
+
 async function build () {
 
-  const cwd = process.cwd();
+  let cwd = process.cwd();
 
   let projectName = await input({ message: `project name: ${currentProjectName}` })
   projectName = projectName || currentProjectName;
+
+  cwd = path.resolve(cwd, projectName)
+
+  if (fs.existsSync(cwd)) {
+    console.log(kleur.red(`directory already exists: ${cwd} `));
+  } else {
+    mkdirSync(cwd);
+  }
 
   const projectDescription = await input({ message: 'project description: ' })
 
@@ -82,4 +102,3 @@ function writeIndex (params: {
   writeFile(params.cwd, 'src/index.ts', content)
 }
 
-build();

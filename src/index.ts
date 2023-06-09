@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { input } from "@inquirer/prompts"
+import { input, confirm } from "@inquirer/prompts"
 import path from "path"
 import fs, { mkdirSync, readFileSync, writeFileSync } from "fs"
 import kleur from "kleur";
@@ -50,6 +50,21 @@ async function build (projectName: string) {
 
   writeGitIgnore({ cwd })
 
+  writeNpmIgnore({ cwd })
+
+  const createLicense = await confirm({
+    message: "Create LICENSE ?",
+    default: true
+  })
+
+  if (createLicense) {
+    const from = 2022
+    const to = new Date().getFullYear()
+
+    writeLicense({ cwd, from, to, projectName })
+  }
+
+
   writeTsConfig({ cwd })
 
   writeReadme({ cwd, projectName })
@@ -93,6 +108,24 @@ function writeGitIgnore (params: {
 }) {
   const content = readTemplate('.gitignore')
   writeFile(params.cwd, '.gitignore', content)
+}
+
+function writeNpmIgnore (params: {
+  cwd: string
+}) {
+  const content = readTemplate('.npmignore')
+  writeFile(params.cwd, '.npmignore', content);
+}
+
+function writeLicense (params: {
+  cwd: string,
+  from: number,
+  to: number,
+  projectName: string
+}) {
+  let content = readTemplate('LICENSE')
+  content = content.replace("{from}", String(params.from)).replace("{to}", String(params.to)).replace("{projectName}", params.projectName)
+  writeFile(params.cwd, "LICENSE", content)
 }
 
 function writeTsConfig (params: {

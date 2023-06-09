@@ -1,6 +1,6 @@
 {
   "name": "vin-node-ts-cli",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A cli for create node+ts project.",
   "main": "dist/index.js",
   "scripts": {
@@ -14,14 +14,14 @@
     "vinnt": "dist/index.js"
   },
   "author": "yumubai",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.2.5",
     "typescript": "^5.1.3",
     "uglify-js": "^3.17.4"
   },
   "dependencies": {
-    "@inquirer/prompts": "^2.1.0",
+    "@inquirer/prompts": "^2.1.1",
     "commander": "^10.0.1",
     "dotenv": "^16.1.4",
     "kleur": "^4.1.5"

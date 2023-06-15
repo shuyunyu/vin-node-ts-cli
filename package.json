@@ -1,6 +1,6 @@
 {
   "name": "vin-node-ts-cli",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A cli for create node+ts project.",
   "main": "dist/index.js",
   "scripts": {

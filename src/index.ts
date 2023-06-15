@@ -5,6 +5,7 @@ import path from "path"
 import fs, { mkdirSync, readFileSync, writeFileSync } from "fs"
 import kleur from "kleur";
 import { program } from "commander";
+import { ExecException, exec } from "child_process";
 
 program
   .option("--version")
@@ -75,6 +76,15 @@ async function build (projectName: string) {
 
   writeCommon({ cwd })
 
+  const execGitInit = await confirm({
+    message: "exec git init ?",
+    default: true
+  })
+
+  if (execGitInit) {
+    await execCmd(`cd ${cwd} && git init`)
+  }
+
 }
 
 function readTemplate (filePath: string) {
@@ -89,6 +99,18 @@ function writeFile (cwd: string, filePath: string, content: string) {
     mkdirSync(dir)
   }
   writeFileSync(p, content, { encoding: 'utf-8' })
+}
+
+function execCmd (cmd: string) {
+  return new Promise<{ success: boolean, message: string }>((resolve, reject) => {
+    exec(cmd, (err: ExecException | null, stdout: string, stderr: string) => {
+      if (err) {
+        resolve({ success: false, message: err.message })
+      } else {
+        resolve({ success: true, message: stdout })
+      }
+    })
+  })
 }
 
 function writePackageJson (params: {
